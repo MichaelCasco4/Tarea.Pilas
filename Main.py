@@ -1,47 +1,61 @@
-"""Una docente de informática en una secundaria revisa tareas impresas que sus estudiantes colocan
-sobre su escritorio. Siempre revisa primero la última tarea entregada. Implementa un sistema que
-permita agregar tareas (push), revisar una (pop), y mostrar cuál es la siguiente en revisar (peek),
-todo usando una pila."""
+"""En una panadería tradicional en León, los panes recién horneados se apilan en una bandeja. El 
+primero que se vende es el último que se colocó. Simula el proceso de agregar panes a la bandeja 
+(push), vender uno (pop), y visualizar qué tipo de pan está listo para vender (peek). """
 
-from Modulos import Tarea, PilaTareas
+from Pila import Pila
+from Pan import Pan
 
-#Creacion de menu para el usuario
+def menu():
+    opc = None
+    pila = Pila()
 
-def mostrar_menu():
-    print("-----------MENU DE TAREAS-------------")
-    print("1. Agregar una tarea")
-    print("2. Revisar una tarea")
-    print("3. Ver la siguiente tarea a revisar")
-    print("4. Salir del menu")
+    while opc != 5:
+        print("="*25)
+        print("1.Agregar panes")
+        print("2.Vender pan")
+        print("3.Pan listo")
+        print("4.Salir")
+        print("="*25)
+
+        try:
+            opc = int(input("Digite su opción:"))
+        except ValueError:
+            print("Su número es invalido!")
+
+        match opc:
+            case 1:
+                tipoDePan = input("Digite el tipo de pan:")
+
+                if tipoDePan:
+                    pan = Pan(tipoDePan)
+
+                    pila.push(pan)
+                    print("Su pan" + " " +tipoDePan + " " + "ha sido añadido!")
+                else:
+                    print("Este campo no puede estar vacio")
+
+                
+
+            case 2:
+                if pila.vacia() is False:
+                    print("La pila esta vacia")
+                else:
+                    panVendido = str(pila.pop())
+                    print("Usted ha vendido el siguiente pan:" + panVendido)
+
+            case 3: 
+                pan = pila.peek()
 
 
-def main():
-    pila = PilaTareas()
+                if pan is False:
+                    print("No hay panes!")
+                    continue
+                else:
+                    pan = str(pan)
+                    print(pan)
+            
+            case 4:
+                print("Saliendo del programa")
+                break
 
-    while True:
-        mostrar_menu()
-        opcion = input("Seleccione una opcion: ")
-
-        if opcion == "1":
-            descripcion = input("Ingrese la descripcion de la tarea a revisar: ")
-            tarea = Tarea(descripcion)
-            pila.push(tarea)
-
-        elif opcion == "2":
-            pila.pop()
-
-        elif opcion == "3":
-            pila.peek()
-
-        elif opcion == "4":
-            print("Saliendo del programa, nos vemos luego...")
-            break
-
-        else:
-            print("Opción inválida. Intente de nuevo.\n")
-
-
-if __name__ == "__main__":
-    main()
-
-    
+menu()
